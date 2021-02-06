@@ -255,6 +255,7 @@ class tech_control_gui:
                                  relwidth=.98)
 
         self.glonass_device_update()
+        self.video_stream()
 
     def get_file_path(self):
         self.file_path = self.SaveFilePathLabel.get()
@@ -296,6 +297,30 @@ class tech_control_gui:
     def run(self):
         self.root.mainloop()
 
+    def video_stream(self, *args):
+        if self.camera.cam != None:
+            width = self.CameraResult.winfo_width()
+            height = self.CameraResult.winfo_height()
+            image = self.camera.video_stream()
+            w, h = image.size
+            height = int(height * (height / h))
+            image = image.resize((width, height), Image.ANTIALIAS)
+            ImgTk = ImageTk.PhotoImage(image=image)
+            self.CameraResult.ImgTk = ImgTk
+            self.CameraResult.configure(image=ImgTk)
+            self.CameraResult.after(1, self.video_stream)
+        else:
+            try:
+                self.camera.set_camera(int(str(self.ListOfAvailableCameras.get()).split(' - ')[1]) - 1)
+            except:
+                pass
+            finally:
+                self.CameraResult.after(1, self.video_stream)
+
+
 
 a = tech_control_gui(Tk())
 a.run()
+
+
+# 1 Видео поток

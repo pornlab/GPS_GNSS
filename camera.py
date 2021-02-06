@@ -36,10 +36,15 @@ class Camera:
         image = None
         for i in range(self.BRIGHTNESS):
             return_value, image = self.cam.read()
-        self.cam.release()
-        cv.imwrite(os.path.join(file_path, 'image.jpg'), image)
-        image = Image.open(os.path.join(file_path, "image.jpg"))
-        image = image.resize((1280, 1024), Image.ANTIALIAS)
+        cv2image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
+        image = Image.fromarray(cv2image)
+        # image = image.resize((1280, 1024), Image.ANTIALIAS)
         image.save(os.path.join(file_path, "image.jpg"))
         glonass.set_coordinates(os.path.join(file_path, 'image.jpg'))
         return image
+
+    def video_stream(self):
+        return_value, image = self.cam.read()
+        cv2image = cv.cvtColor(image, cv.COLOR_BGR2RGBA)
+        img = Image.fromarray(cv2image)
+        return img
