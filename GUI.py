@@ -375,7 +375,6 @@ class tech_control_gui:
         data = 'Время - {0}\r\nДата - {1}\r\nШирота - {2}\r\nДолгота - {3}'.format(self.PictureTime,
                                                                                    self.PictureDate,
                                                                                    self.PictureGPSLatitude,
-
                                                                                    self.PictureGPSLongitude)
         copy(data)
 
