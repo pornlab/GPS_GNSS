@@ -45,6 +45,6 @@ class Camera:
 
     def video_stream(self):
         return_value, image = self.cam.read()
-        cv2image = cv.cvtColor(image, cv.COLOR_BGR2RGBA)
+        cv2image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
         img = Image.fromarray(cv2image)
         return img

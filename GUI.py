@@ -11,9 +11,10 @@ import glonass
 class tech_control_gui:
     def __init__(self, top):
         self.root = top
+        #self.root.bind("<Configure>", self.resize)
         self.camera = Camera()
         top.geometry("800x480")
-        top.title("Фотофиксация ТО-1")
+        top.title('ФОТОФИКСАЦИЯ "ПМ-1"')
         top.configure(background="#FFFFFF")
         top.configure(highlightcolor="white")
         fontExample = ("Roboto", 14)
@@ -26,6 +27,8 @@ class tech_control_gui:
         self.MakePicImageFile = ImageTk.PhotoImage(Image.open("images/make_pic.jpeg").resize((26, 20), Image.ANTIALIAS))
         self.CameraDisabledStateImageFile = ImageTk.PhotoImage(
             Image.open("images/red_circle.jpeg").resize((11, 11), Image.ANTIALIAS))
+        self.CameraUpdateStateImageFile = ImageTk.PhotoImage(
+            Image.open("images/orange_circle.jpeg").resize((11, 11), Image.ANTIALIAS))
         self.CameraEnabledStateImageFile = ImageTk.PhotoImage(
             Image.open("images/green_circle.jpeg").resize((11, 11), Image.ANTIALIAS))
         self.GPSSatelliteRedImageFile = ImageTk.PhotoImage(
@@ -67,6 +70,8 @@ class tech_control_gui:
                                 rely=.01,
                                 relheight=.98,
                                 relwidth=.98)
+        self.width = self.CameraResult.winfo_width()
+        self.height = self.CameraResult.winfo_height()
 
         self.VideoImage = Label(self.ToolsFrame,
                                 background="#FFFFFF",
@@ -96,6 +101,7 @@ class tech_control_gui:
         self.ListOfAvailableCameras = ttk.Combobox(self.ToolsFrame,
                                                    background="#FFFFFF",
                                                    values=self.ListOfCameras,
+                                                   state="readonly",
                                                    style="TCombobox")
         self.ListOfAvailableCameras.bind('<Button-1>', self.camera_list_update)
         self.ListOfAvailableCameras.current(0)
@@ -132,6 +138,7 @@ class tech_control_gui:
                                                       background="#FFFFFF",
                                                       values=self.ListOfGPSModules,
                                                       style="TCombobox",
+                                                      state="readonly",
                                                       font=fontExample)
         self.ListOfAvailableGPSModules.bind('<Button-1>', self.glonass_device_update)
         self.ListOfAvailableGPSModules.current(0)
@@ -262,19 +269,22 @@ class tech_control_gui:
         return self.file_path
 
     def capture(self):
-        width = self.CameraResult.winfo_width()
-        height = self.CameraResult.winfo_height()
+        self.width = self.CameraResult.winfo_width()
+        self.height = self.CameraResult.winfo_height()
         self.camera.set_camera(int(str(self.ListOfAvailableCameras.get()).split(' - ')[1]) - 1)
         self.camera.make_a_capture(self.get_file_path())
         image = Image.open(os.path.join(self.get_file_path(), "image.jpg"))
         w, h = image.size
-        height = int(height * (height / h))
-        image = image.resize((width, height), Image.ANTIALIAS)
+        self.height = int(self.height * (self.height / h))
+        image = image.resize((self.width, self.height), Image.ANTIALIAS)
         self.camera_image = ImageTk.PhotoImage(image)
         self.CameraResult.configure(image=self.camera_image)
-        # self.CameraResult.update()
 
     def camera_list_update(self, *args):
+        self.VideoImage.configure(image=self.CameraUpdateStateImageFile)
+        self.VideoImage.update()
+        self.width = self.CameraResult.winfo_width()
+        self.height = self.CameraResult.winfo_height()
         self.ListOfCameras = self.camera.get_list_of_available_cameras()
         for i in range(len(self.ListOfCameras)):
             self.ListOfCameras[i] = 'USB Камера - ' + str(self.ListOfCameras[i] + 1)
@@ -298,17 +308,20 @@ class tech_control_gui:
         self.root.mainloop()
 
     def video_stream(self, *args):
-        if self.camera.cam != None:
-            width = self.CameraResult.winfo_width()
-            height = self.CameraResult.winfo_height()
-            image = self.camera.video_stream()
-            w, h = image.size
-            height = int(height * (height / h))
-            image = image.resize((width, height), Image.ANTIALIAS)
-            ImgTk = ImageTk.PhotoImage(image=image)
-            self.CameraResult.ImgTk = ImgTk
-            self.CameraResult.configure(image=ImgTk)
-            self.CameraResult.after(1, self.video_stream)
+        self.width = self.CameraResult.winfo_width()
+        self.height = self.CameraResult.winfo_height()
+        if self.camera.cam is not None:
+            try:
+                image = self.camera.video_stream()
+                w, h = image.size
+                self.height = int(self.height * (self.height / h))
+                image = image.resize((self.width, self.height), Image.ANTIALIAS)
+                ImgTk = ImageTk.PhotoImage(image=image)
+                self.CameraResult.ImgTk = ImgTk
+                self.CameraResult.configure(image=ImgTk)
+                self.CameraResult.after(1, self.video_stream)
+            except:
+                pass
         else:
             try:
                 self.camera.set_camera(int(str(self.ListOfAvailableCameras.get()).split(' - ')[1]) - 1)
@@ -317,10 +330,14 @@ class tech_control_gui:
             finally:
                 self.CameraResult.after(1, self.video_stream)
 
+    def resize(self, event):
+        try:
+            self.CameraResult.after(3, self.video_stream)
+        except:
+            pass
+
+
 
 
 a = tech_control_gui(Tk())
 a.run()
-
-
-# 1 Видео поток
