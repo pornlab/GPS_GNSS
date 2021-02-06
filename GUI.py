@@ -18,24 +18,24 @@ class tech_control_gui:
         top.configure(highlightcolor="white")
         fontExample = ("Roboto", 14)
 
-        self.CameraImageFile = ImageTk.PhotoImage(Image.open("images/camera.png").resize((15, 12), Image.ANTIALIAS))
+        self.CameraImageFile = ImageTk.PhotoImage(Image.open("images/camera.png").resize((14, 14), Image.ANTIALIAS))
         self.GPSPointImageFile = ImageTk.PhotoImage(
-            Image.open("images/gps_point.png").resize((10, 14), Image.ANTIALIAS))
+            Image.open("images/gps_point.png").resize((14, 14), Image.ANTIALIAS))
         self.SaveFileImageFile = ImageTk.PhotoImage(
-            Image.open("images/save_file.png").resize((12, 16), Image.ANTIALIAS))
-        self.MakePicImageFile = ImageTk.PhotoImage(Image.open("images/make_pic.png").resize((26, 20), Image.ANTIALIAS))
+            Image.open("images/save_file.png").resize((14, 14), Image.ANTIALIAS))
+        self.MakePicImageFile = ImageTk.PhotoImage(Image.open("images/make_pic.jpeg").resize((26, 20), Image.ANTIALIAS))
         self.CameraDisabledStateImageFile = ImageTk.PhotoImage(
-            Image.open("images/red_circle.png").resize((11, 11), Image.ANTIALIAS))
+            Image.open("images/red_circle.jpeg").resize((11, 11), Image.ANTIALIAS))
         self.CameraEnabledStateImageFile = ImageTk.PhotoImage(
-            Image.open("images/green_circle.png").resize((11, 11), Image.ANTIALIAS))
+            Image.open("images/green_circle.jpeg").resize((11, 11), Image.ANTIALIAS))
         self.GPSSatelliteRedImageFile = ImageTk.PhotoImage(
-            Image.open("images/red_circle.png").resize((11, 11), Image.ANTIALIAS))
+            Image.open("images/red_circle.jpeg").resize((11, 11), Image.ANTIALIAS))
         self.GPSSatelliteOrangeImageFile = ImageTk.PhotoImage(
-            Image.open("images/orange_circle.png").resize((11, 11), Image.ANTIALIAS))
+            Image.open("images/orange_circle.jpeg").resize((11, 11), Image.ANTIALIAS))
         self.GPSSatelliteYellowImageFile = ImageTk.PhotoImage(
-            Image.open("images/yellow_circle.png").resize((11, 11), Image.ANTIALIAS))
+            Image.open("images/yellow_circle.jpeg").resize((11, 11), Image.ANTIALIAS))
         self.GPSSatelliteGreenImageFile = ImageTk.PhotoImage(
-            Image.open("images/green_circle.png").resize((11, 11), Image.ANTIALIAS))
+            Image.open("images/green_circle.jpeg").resize((11, 11), Image.ANTIALIAS))
         self.camera_image = None
         self.file_path = ''
         self.ListOfCameras = ['Выберите камеру...']
