@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import filedialog
 from PIL import Image, ImageTk
 from camera import Camera
 import os
@@ -11,7 +12,7 @@ import glonass
 class tech_control_gui:
     def __init__(self, top):
         self.root = top
-        #self.root.bind("<Configure>", self.resize)
+        # self.root.bind("<Configure>", self.resize)
         self.camera = Camera()
         top.geometry("800x480")
         top.title('ФОТОФИКСАЦИЯ "ПМ-1"')
@@ -169,7 +170,14 @@ class tech_control_gui:
         self.SaveFilePathLabel.place(relx=.01,
                                      rely=.30,
                                      relheight=.05,
-                                     relwidth=.98)
+                                     relwidth=.58)
+        self.SaveFilePathButton = Button(self.ToolsFrame,
+                                         text="Выбрать",
+                                         command=self.open_file_dialog)
+        self.SaveFilePathButton.place(relx=.60,
+                                      rely=.30,
+                                      relheight=.05,
+                                      relwidth=.38)
 
         self.GPSTimeLabel = Label(self.ToolsFrame,
                                   justify=LEFT,
@@ -336,7 +344,9 @@ class tech_control_gui:
         except:
             pass
 
-
+    def open_file_dialog(self):
+        self.file_path = filedialog.askdirectory()
+        self.SaveFilePathLabel.insert(0, self.file_path)
 
 
 a = tech_control_gui(Tk())
