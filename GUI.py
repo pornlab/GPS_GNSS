@@ -7,7 +7,7 @@ import os
 from time import sleep
 import threading
 import glonass
-
+from copypaste import copy
 
 class tech_control_gui:
     def __init__(self, top):
@@ -19,6 +19,11 @@ class tech_control_gui:
         top.configure(background="#FFFFFF")
         top.configure(highlightcolor="white")
         fontExample = ("Roboto", 14)
+
+        self.PictureTime = ''
+        self.PictureDate = ''
+        self.PictureGPSLatitude = ''
+        self.PictureGPSLongitude = ''
 
         self.CameraImageFile = ImageTk.PhotoImage(Image.open("images/camera.png").resize((14, 14), Image.ANTIALIAS))
         self.GPSPointImageFile = ImageTk.PhotoImage(
@@ -180,7 +185,8 @@ class tech_control_gui:
                                       relwidth=.38)
 
         self.GPSTimeLabel = Label(self.ToolsFrame,
-                                  justify=LEFT,
+                                  width=10,
+                                  anchor='w',
                                   background="#FFFFFF",
                                   text="Время")
         self.GPSTimeLabel.place(relx=.01,
@@ -188,17 +194,28 @@ class tech_control_gui:
                                 relheight=.03,
                                 relwidth=.3)
 
+        self.time_of_gps = 0
+        self.LocalTime = Checkbutton(self.ToolsFrame,
+                                     text='GPS',
+                                     variable=self.time_of_gps)
+        self.LocalTime.place(relx=.25,
+                             rely=.40,
+                             relheight=.03,
+                             relwidth=.2)
+
         self.GPSTime = Label(self.ToolsFrame,
-                             justify=RIGHT,
+                             width=10,
+                             anchor='e',
                              background="#FFFFFF",
                              text="11:12:13")
-        self.GPSTime.place(relx=.41,
+        self.GPSTime.place(relx=.61,
                            rely=.40,
                            relheight=.03,
-                           relwidth=.5)
+                           relwidth=.3)
 
         self.GPSDateLabel = Label(self.ToolsFrame,
-                                  justify=LEFT,
+                                  width=10,
+                                  anchor='w',
                                   background="#FFFFFF",
                                   text="Дата")
         self.GPSDateLabel.place(relx=.01,
@@ -207,8 +224,8 @@ class tech_control_gui:
                                 relwidth=.3)
 
         self.GPSDate = Label(self.ToolsFrame,
-                             background="#FFFFFF",
-                             justify=RIGHT,
+                             width=10,
+                             anchor='e',
                              text="01.01.2021")
         self.GPSDate.place(relx=.41,
                            rely=.45,
@@ -216,7 +233,8 @@ class tech_control_gui:
                            relwidth=.5)
 
         self.GPSLatitudeLabel = Label(self.ToolsFrame,
-                                      justify=LEFT,
+                                      width=10,
+                                      anchor='w',
                                       background="#FFFFFF",
                                       text="Широта")
         self.GPSLatitudeLabel.place(relx=.01,
@@ -225,7 +243,8 @@ class tech_control_gui:
                                     relwidth=.3)
 
         self.GPSLatitude = Label(self.ToolsFrame,
-                                 justify=RIGHT,
+                                 width=10,
+                                 anchor='e',
                                  background="#FFFFFF",
                                  text='32.211234')
         self.GPSLatitude.place(relx=.41,
@@ -234,7 +253,8 @@ class tech_control_gui:
                                relwidth=.5)
 
         self.GPSLongitudeLabel = Label(self.ToolsFrame,
-                                       justify=LEFT,
+                                       width=10,
+                                       anchor='w',
                                        background="#FFFFFF",
                                        text="Долгота")
         self.GPSLongitudeLabel.place(relx=.01,
@@ -243,7 +263,8 @@ class tech_control_gui:
                                      relwidth=.3)
 
         self.GPSLongitude = Label(self.ToolsFrame,
-                                  justify=RIGHT,
+                                  width=10,
+                                  anchor='e',
                                   background="#FFFFFF",
                                   text='23.345245')
         self.GPSLongitude.place(relx=.41,
@@ -252,6 +273,7 @@ class tech_control_gui:
                                 relwidth=.5)
 
         self.CopyButton = ttk.Button(self.ToolsFrame,
+                                     command=self.copy_data,
                                      text='Скопировать данные')
         self.CopyButton.place(relx=.01,
                               rely=.62,
@@ -277,16 +299,17 @@ class tech_control_gui:
         return self.file_path
 
     def capture(self):
-        self.width = self.CameraResult.winfo_width()
-        self.height = self.CameraResult.winfo_height()
-        self.camera.set_camera(int(str(self.ListOfAvailableCameras.get()).split(' - ')[1]) - 1)
-        self.camera.make_a_capture(self.get_file_path())
-        image = Image.open(os.path.join(self.get_file_path(), "image.jpg"))
-        w, h = image.size
-        self.height = int(self.height * (self.height / h))
-        image = image.resize((self.width, self.height), Image.ANTIALIAS)
-        self.camera_image = ImageTk.PhotoImage(image)
-        self.CameraResult.configure(image=self.camera_image)
+        if self.camera.cam is not None:
+            self.width = self.CameraResult.winfo_width()
+            self.height = self.CameraResult.winfo_height()
+            self.camera.set_camera(int(str(self.ListOfAvailableCameras.get()).split(' - ')[1]) - 1)
+            self.camera.make_a_capture(self.get_file_path())
+            image = Image.open(os.path.join(self.get_file_path(), "image.jpg"))
+            w, h = image.size
+            self.height = int(self.height * (self.height / h))
+            image = image.resize((self.width, self.height), Image.ANTIALIAS)
+            self.camera_image = ImageTk.PhotoImage(image)
+            self.CameraResult.configure(image=self.camera_image)
 
     def camera_list_update(self, *args):
         self.VideoImage.configure(image=self.CameraUpdateStateImageFile)
@@ -347,6 +370,13 @@ class tech_control_gui:
     def open_file_dialog(self):
         self.file_path = filedialog.askdirectory()
         self.SaveFilePathLabel.insert(0, self.file_path)
+
+    def copy_data(self):
+        data = 'Время - {0}\r\nДата - {1}\r\nШирота - {2}\r\nДолгота - {3}'.format(self.PictureTime,
+                                                                                   self.PictureDate,
+                                                                                   self.PictureGPSLatitude,
+                                                                                   self.PictureGPSLongitude)
+        copy(data)
 
 
 a = tech_control_gui(Tk())
