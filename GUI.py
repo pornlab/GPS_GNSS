@@ -20,7 +20,7 @@ class tech_control_gui:
         top.title('ФОТОФИКСАЦИЯ "ПМ-1"')
         top.configure(background="#FFFFFF")
         top.configure(highlightcolor="white")
-        font = ("Roboto", 14)
+        font = ("Roboto", 10)
 
         self.PictureTime = ''
         self.PictureDate = ''
