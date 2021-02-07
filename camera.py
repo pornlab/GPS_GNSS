@@ -30,7 +30,6 @@ class Camera:
             return False
 
     def make_a_capture(self, file_path, file_name):
-        return_value = 0
         image = None
         for i in range(self.BRIGHTNESS):
             return_value, image = self.cam.read()

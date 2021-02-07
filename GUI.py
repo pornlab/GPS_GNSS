@@ -6,9 +6,7 @@ from camera import Camera
 import os
 from glonass import Glonass
 from copypaste import copy
-from time import sleep
 from datetime import datetime
-import time
 
 
 class tech_control_gui:
@@ -295,20 +293,20 @@ class tech_control_gui:
                                 relheight=.03,
                                 relwidth=.57)
 
-        self.CopyButton = ttk.Button(self.ToolsFrame,
-                                     command=self.copy_data,
-                                     text='Скопировать данные')
+        self.CopyButton = Button(self.ToolsFrame,
+                                 command=self.copy_data,
+                                 text='Скопировать данные')
         self.CopyButton.place(relx=.01,
                               rely=.62,
                               relheight=.15,
                               relwidth=.98)
 
-        self.MakePicButton = ttk.Button(self.ToolsFrame,
-                                        text='Сделать Снимок',
-                                        style='MakePic.TButton',
-                                        compound="left",
-                                        image=self.MakePicImageFile,
-                                        command=self.capture)
+        self.MakePicButton = Button(self.ToolsFrame,
+                                    text='Сделать Снимок',
+                                    background="#EE5555",
+                                    compound="left",
+                                    image=self.MakePicImageFile,
+                                    command=self.capture)
         self.MakePicButton.place(relx=.01,
                                  rely=.78,
                                  relheight=.2,
@@ -333,7 +331,6 @@ class tech_control_gui:
             image = image.resize((self.width, self.height), Image.ANTIALIAS)
             self.camera_image = ImageTk.PhotoImage(image)
             self.CameraResult.configure(image=self.camera_image)
-            self.glonass.set_coordinates(os.path.join(self.file_path, self.PictureFileName))
 
             self.GPSLongitude.config(text=self.glonass.longitude_text)
             self.GPSLatitude.config(text=self.glonass.latitude_text)
@@ -346,10 +343,13 @@ class tech_control_gui:
                 self.PictureDate = self.glonass.GPS_DATE
                 self.PictureTime = self.glonass.GPS_TIME
             else:
+                self.glonass.GPS_TIME = datetime.now().strftime("%H:%M:%S")
                 self.GPSTime.config(text=datetime.now().strftime("%H:%M:%S"))
                 self.GPSDate.config(text=datetime.now().strftime("%d.%m.%Y"))
                 self.PictureDate = datetime.now().strftime("%d.%m.%Y")
                 self.PictureTime = datetime.now().strftime("%H:%M:%S")
+
+            self.glonass.set_coordinates(os.path.join(self.file_path, self.PictureFileName))
 
     def camera_list_update(self, *args):
         self.VideoImage.configure(image=self.CameraUpdateStateImageFile)
@@ -365,11 +365,9 @@ class tech_control_gui:
             self.VideoImage.configure(image=self.CameraDisabledStateImageFile)
         self.ListOfAvailableCameras.configure(values=self.ListOfCameras)
 
-        # 12.05.2020 12:34 5645645˚7864564554" с.ш. 5645645˚7864564554" ю.д..JPG
-
     def glonass_device_update(self, *args):
         self.ListOfGPSModules = self.glonass.check_device()
-        print(self.ListOfGPSModules)
+        # print(self.ListOfGPSModules)
         if not self.ListOfGPSModules:
             self.ListOfGPSModules = ['Выберите устройство GLONASS']
             self.GPSPointImage.configure(image=self.GPSSatelliteRedImageFile)
@@ -421,7 +419,7 @@ class tech_control_gui:
         copy(data)
 
     def open_glonass(self, *args):
-        print(self.ListOfAvailableGPSModules.get())
+        # print(self.ListOfAvailableGPSModules.get())
         self.glonass.open_glonass(str(self.ListOfAvailableGPSModules.get()).split(' - ')[1])
         self.start_glonass_monitor()
 

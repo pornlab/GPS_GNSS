@@ -20,16 +20,14 @@ class Glonass:
         self.port = ''
 
     def set_coordinates(self, file):
-        print(1234)
+        #print(1234)
         f = open(file, 'rb')
         img = Image(f)
         meta = dir(img)
         img.set('gps_latitude', self.GPS_LATITUDE)
         img.set('gps_longitude', self.GPS_LONGITUDE)
         #img.set('gps_altitude', self.GPS_ALTITUDE)
-
-        for i in meta:
-            print(i, img.get(i))
+        file = self.GPS_DATE + ' ' + self.GPS_TIME + ' ' + self.latitude_text + ' с.ш. ' + self.longitude_text + ' ю.д..jpg'
 
         new_f = open(file, 'wb')
         new_f.write(img.get_file())
@@ -98,7 +96,7 @@ class Glonass:
                 except:
                     pass
 
-        print(self.GPS_TIME, self.GPS_DATE)
-        print('SATELLITES = ', self.GPS_SATELLITES)
-        print("LATITUDE = ", self.GPS_LATITUDE, self.GPS_LATITUDE_REF)
-        print("LONGITUDE = ", self.GPS_LONGITUDE, self.GPS_LONGITUDE_REF)
+        #print(self.GPS_TIME, self.GPS_DATE)
+        #print('SATELLITES = ', self.GPS_SATELLITES)
+        #print("LATITUDE = ", self.GPS_LATITUDE, self.GPS_LATITUDE_REF)
+        #print("LONGITUDE = ", self.GPS_LONGITUDE, self.GPS_LONGITUDE_REF)
