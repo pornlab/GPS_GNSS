@@ -200,10 +200,12 @@ class tech_control_gui:
                                 relheight=.03,
                                 relwidth=.3)
 
-        self.time_of_gps = 0
+        self.time_of_gps = BooleanVar()
+        self.time_of_gps.set(0)
         self.LocalTime = Checkbutton(self.ToolsFrame,
                                      text='GPS',
-                                     variable=self.time_of_gps)
+                                     variable=self.time_of_gps,
+                                     onvalue=1, offvalue=0)
         self.LocalTime.place(relx=.25,
                              rely=.40,
                              relheight=.03,
@@ -320,13 +322,19 @@ class tech_control_gui:
 
             self.GPSLongitude.config(text=self.glonass.longitude_text)
             self.GPSLatitude.config(text=self.glonass.latitude_text)
-            self.GPSTime.config(text=self.glonass.GPS_TIME)
-            self.GPSDate.config(text=self.glonass.GPS_DATE)
-
-            self.PictureDate = self.glonass.GPS_DATE
-            self.PictureTime = self.glonass.GPS_TIME
             self.PictureGPSLongitude = self.glonass.longitude_text
             self.PictureGPSLatitude = self.glonass.latitude_text
+
+            if self.time_of_gps.get():
+                self.GPSTime.config(text=self.glonass.GPS_TIME)
+                self.GPSDate.config(text=self.glonass.GPS_DATE)
+                self.PictureDate = self.glonass.GPS_DATE
+                self.PictureTime = self.glonass.GPS_TIME
+            else:
+                self.GPSTime.config(text=datetime.now().strftime("%H:%M:%S"))
+                self.GPSDate.config(text=datetime.now().strftime("%d.%m.%Y"))
+                self.PictureDate = datetime.now().strftime("%d.%m.%Y")
+                self.PictureTime = datetime.now().strftime("%H:%M:%S")
 
     def camera_list_update(self, *args):
         self.VideoImage.configure(image=self.CameraUpdateStateImageFile)
@@ -399,6 +407,7 @@ class tech_control_gui:
         print(self.ListOfAvailableGPSModules.get())
         self.glonass.open_glonass(str(self.ListOfAvailableGPSModules.get()).split(' - ')[1])
         self.start_glonass_monitor()
+
 
     def start_glonass_monitor(self, *args):
         self.glonass.parse_glonass_data()
