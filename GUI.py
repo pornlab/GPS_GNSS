@@ -4,16 +4,17 @@ from tkinter import filedialog
 from PIL import Image, ImageTk
 from camera import Camera
 import os
-from time import sleep
-import threading
-import glonass
+from glonass import Glonass
 from copypaste import copy
+from time import sleep
+
 
 class tech_control_gui:
     def __init__(self, top):
         self.root = top
         # self.root.bind("<Configure>", self.resize)
         self.camera = Camera()
+        self.glonass = Glonass()
         top.geometry("800x480")
         top.title('ФОТОФИКСАЦИЯ "ПМ-1"')
         top.configure(background="#FFFFFF")
@@ -24,6 +25,7 @@ class tech_control_gui:
         self.PictureDate = ''
         self.PictureGPSLatitude = ''
         self.PictureGPSLongitude = ''
+        self.PictureFileName = 'image.jpg'
 
         self.CameraImageFile = ImageTk.PhotoImage(Image.open("images/camera.png").resize((14, 14), Image.ANTIALIAS))
         self.GPSPointImageFile = ImageTk.PhotoImage(
@@ -49,7 +51,7 @@ class tech_control_gui:
         self.file_path = ''
         self.ListOfCameras = ['Выберите камеру...']
 
-        self.ListOfGPSModules = ['Устройство GLONASS...']
+        self.ListOfGPSModules = ['Выберите устройство GLONASS...']
 
         self.AppStyle = ttk.Style()
         self.AppStyle.configure('MakePic.TButton', background="#ff2525")
@@ -126,7 +128,7 @@ class tech_control_gui:
 
         self.GPSModuleType = Label(self.ToolsFrame,
                                    background="#FFFFFF",
-                                   text="GPS Модуль")
+                                   text="GLONASS Модуль")
         self.GPSModuleType.place(relx=.12,
                                  rely=.13,
                                  relheight=.03,
@@ -147,6 +149,7 @@ class tech_control_gui:
                                                       state="readonly",
                                                       font=fontExample)
         self.ListOfAvailableGPSModules.bind('<Button-1>', self.glonass_device_update)
+        self.ListOfAvailableGPSModules.bind('<<ComboboxSelected>>', self.open_glonass)
         self.ListOfAvailableGPSModules.current(0)
         self.ListOfAvailableGPSModules.place(relx=.01,
                                              rely=.18,
@@ -211,7 +214,7 @@ class tech_control_gui:
         self.GPSTime.place(relx=.61,
                            rely=.40,
                            relheight=.03,
-                           relwidth=.3)
+                           relwidth=.37)
 
         self.GPSDateLabel = Label(self.ToolsFrame,
                                   width=10,
@@ -230,7 +233,7 @@ class tech_control_gui:
         self.GPSDate.place(relx=.41,
                            rely=.45,
                            relheight=.03,
-                           relwidth=.5)
+                           relwidth=.57)
 
         self.GPSLatitudeLabel = Label(self.ToolsFrame,
                                       width=10,
@@ -250,7 +253,7 @@ class tech_control_gui:
         self.GPSLatitude.place(relx=.41,
                                rely=.5,
                                relheight=.03,
-                               relwidth=.5)
+                               relwidth=.57)
 
         self.GPSLongitudeLabel = Label(self.ToolsFrame,
                                        width=10,
@@ -270,7 +273,7 @@ class tech_control_gui:
         self.GPSLongitude.place(relx=.41,
                                 rely=.55,
                                 relheight=.03,
-                                relwidth=.5)
+                                relwidth=.57)
 
         self.CopyButton = ttk.Button(self.ToolsFrame,
                                      command=self.copy_data,
@@ -303,13 +306,24 @@ class tech_control_gui:
             self.width = self.CameraResult.winfo_width()
             self.height = self.CameraResult.winfo_height()
             self.camera.set_camera(int(str(self.ListOfAvailableCameras.get()).split(' - ')[1]) - 1)
-            self.camera.make_a_capture(self.get_file_path())
-            image = Image.open(os.path.join(self.get_file_path(), "image.jpg"))
+            self.camera.make_a_capture(self.get_file_path(), self.PictureFileName)
+            image = Image.open(os.path.join(self.get_file_path(), self.PictureFileName))
             w, h = image.size
             self.height = int(self.height * (self.height / h))
             image = image.resize((self.width, self.height), Image.ANTIALIAS)
             self.camera_image = ImageTk.PhotoImage(image)
             self.CameraResult.configure(image=self.camera_image)
+            self.glonass.set_coordinates(os.path.join(self.file_path, self.PictureFileName))
+
+            self.GPSLongitude.config(text=self.glonass.longitude_text)
+            self.GPSLatitude.config(text=self.glonass.latitude_text)
+            self.GPSTime.config(text=self.glonass.GPS_TIME)
+            self.GPSDate.config(text=self.glonass.GPS_DATE)
+
+            self.PictureDate = self.glonass.GPS_DATE
+            self.PictureTime = self.glonass.GPS_TIME
+            self.PictureGPSLongitude = self.glonass.longitude_text
+            self.PictureGPSLatitude = self.glonass.latitude_text
 
     def camera_list_update(self, *args):
         self.VideoImage.configure(image=self.CameraUpdateStateImageFile)
@@ -321,15 +335,15 @@ class tech_control_gui:
             self.ListOfCameras[i] = 'USB Камера - ' + str(self.ListOfCameras[i] + 1)
             self.VideoImage.configure(image=self.CameraEnabledStateImageFile)
         if not self.ListOfCameras:
-            self.ListOfCameras = ['USB Камера не подключена']
+            self.ListOfCameras = ['Выберите камеру']
             self.VideoImage.configure(image=self.CameraDisabledStateImageFile)
         self.ListOfAvailableCameras.configure(values=self.ListOfCameras)
 
     def glonass_device_update(self, *args):
-        self.ListOfGPSModules = glonass.check_device()
+        self.ListOfGPSModules = self.glonass.check_device()
         print(self.ListOfGPSModules)
         if not self.ListOfGPSModules:
-            self.ListOfGPSModules = ['Устройство GLONASS...']
+            self.ListOfGPSModules = ['Выберите устройство GLONASS']
             self.GPSPointImage.configure(image=self.GPSSatelliteRedImageFile)
         else:
             self.GPSPointImage.configure(image=self.GPSSatelliteOrangeImageFile)
@@ -378,6 +392,14 @@ class tech_control_gui:
                                                                                    self.PictureGPSLongitude)
         copy(data)
 
+    def open_glonass(self, *args):
+        print(self.ListOfAvailableGPSModules.get())
+        self.glonass.open_glonass(str(self.ListOfAvailableGPSModules.get()).split(' - ')[1])
+        self.start_glonass_monitor()
+
+    def start_glonass_monitor(self, *args):
+        self.glonass.parse_glonass_data()
+        self.ListOfAvailableGPSModules.after(2000, self.start_glonass_monitor)
 
 a = tech_control_gui(Tk())
 a.run()

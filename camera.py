@@ -1,7 +1,7 @@
 import cv2 as cv
 from PIL import Image
 import os
-import glonass
+from glonass import Glonass
 
 
 class Camera:
@@ -9,7 +9,6 @@ class Camera:
         self.cam = None
         self.cam_list = []
         self.BRIGHTNESS = 30
-        glonass.check_device()
 
     def get_list_of_available_cameras(self):
         index = 0
@@ -31,7 +30,7 @@ class Camera:
         else:
             return False
 
-    def make_a_capture(self, file_path):
+    def make_a_capture(self, file_path, file_name):
         return_value = 0
         image = None
         for i in range(self.BRIGHTNESS):
@@ -39,8 +38,7 @@ class Camera:
         cv2image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
         image = Image.fromarray(cv2image)
         # image = image.resize((1280, 1024), Image.ANTIALIAS)
-        image.save(os.path.join(file_path, "image.jpg"))
-        glonass.set_coordinates(os.path.join(file_path, 'image.jpg'))
+        image.save(os.path.join(file_path, file_name))
         return image
 
     def video_stream(self):
