@@ -7,6 +7,9 @@ import os
 from glonass import Glonass
 from copypaste import copy
 from time import sleep
+from datetime import datetime
+import time
+
 
 
 class tech_control_gui:
@@ -210,7 +213,7 @@ class tech_control_gui:
                              width=10,
                              anchor='e',
                              background="#FFFFFF",
-                             text="11:12:13")
+                             text=datetime.now().strftime("%H:%M:%S"))
         self.GPSTime.place(relx=.61,
                            rely=.40,
                            relheight=.03,
@@ -229,7 +232,7 @@ class tech_control_gui:
         self.GPSDate = Label(self.ToolsFrame,
                              width=10,
                              anchor='e',
-                             text="01.01.2021")
+                             text=datetime.now().strftime("%d.%m.%Y"))
         self.GPSDate.place(relx=.41,
                            rely=.45,
                            relheight=.03,
