@@ -252,7 +252,7 @@ class tech_control_gui:
                                  width=10,
                                  anchor='e',
                                  background="#FFFFFF",
-                                 text='32.211234')
+                                 text='0')
         self.GPSLatitude.place(relx=.41,
                                rely=.5,
                                relheight=.03,
@@ -272,7 +272,7 @@ class tech_control_gui:
                                   width=10,
                                   anchor='e',
                                   background="#FFFFFF",
-                                  text='23.345245')
+                                  text='0')
         self.GPSLongitude.place(relx=.41,
                                 rely=.55,
                                 relheight=.03,
