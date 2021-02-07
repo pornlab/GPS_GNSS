@@ -1,7 +1,6 @@
 import cv2 as cv
 from PIL import Image
 import os
-from glonass import Glonass
 
 
 class Camera:
@@ -37,7 +36,6 @@ class Camera:
             return_value, image = self.cam.read()
         cv2image = cv.cvtColor(image, cv.COLOR_BGR2RGB)
         image = Image.fromarray(cv2image)
-        # image = image.resize((1280, 1024), Image.ANTIALIAS)
         image.save(os.path.join(file_path, file_name))
         return image
 

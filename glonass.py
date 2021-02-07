@@ -1,10 +1,8 @@
 # https://gitlab.com/TNThieding/exif
 
 from exif import Image
-import pyubx2
 from serial import Serial
 import serial.tools.list_ports
-from time import sleep
 
 
 class Glonass:
