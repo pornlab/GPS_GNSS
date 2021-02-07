@@ -19,6 +19,7 @@ class tech_control_gui:
         self.camera = Camera()
         self.glonass = Glonass()
         top.geometry("800x480")
+        top.resizable(0, 0)
         top.title('ФОТОФИКСАЦИЯ "ПМ-1"')
         top.configure(background="#FFFFFF")
         top.configure(highlightcolor="white")
