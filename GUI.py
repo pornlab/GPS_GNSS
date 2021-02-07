@@ -98,8 +98,8 @@ class tech_control_gui:
                                 font=fontExample)
         self.CameraType.place(relx=.12,
                               rely=.01,
-                              relheight=.03,
-                              relwidth=.3)
+                              relheight=.04,
+                              relwidth=.4)
 
         self.VideoImage = Label(self.ToolsFrame,
                                 background="#FFFFFF",
@@ -118,14 +118,14 @@ class tech_control_gui:
         self.ListOfAvailableCameras.current(0)
         self.ListOfAvailableCameras.place(relx=.01,
                                           rely=.06,
-                                          relheight=.05,
+                                          relheight=.06,
                                           relwidth=.98)
 
         self.GPSPointImage = Label(self.ToolsFrame,
                                    background="#FFFFFF",
                                    image=self.GPSPointImageFile)
         self.GPSPointImage.place(relx=.01,
-                                 rely=.13,
+                                 rely=.14,
                                  relheight=.03,
                                  relwidth=.1)
 
@@ -133,15 +133,15 @@ class tech_control_gui:
                                    background="#FFFFFF",
                                    text="GLONASS Модуль")
         self.GPSModuleType.place(relx=.12,
-                                 rely=.13,
+                                 rely=.14,
                                  relheight=.03,
-                                 relwidth=.3)
+                                 relwidth=.5)
 
         self.GPSPointImage = Label(self.ToolsFrame,
                                    background="#FFFFFF",
                                    image=self.GPSSatelliteRedImageFile)
         self.GPSPointImage.place(relx=.9,
-                                 rely=.13,
+                                 rely=.14,
                                  relheight=.03,
                                  relwidth=.1)
 
@@ -156,14 +156,14 @@ class tech_control_gui:
         self.ListOfAvailableGPSModules.current(0)
         self.ListOfAvailableGPSModules.place(relx=.01,
                                              rely=.18,
-                                             relheight=.05,
+                                             relheight=.06,
                                              relwidth=.98)
 
         self.SaveFileImage = Label(self.ToolsFrame,
                                    background="#FFFFFF",
                                    image=self.SaveFileImageFile)
         self.SaveFileImage.place(relx=.01,
-                                 rely=.25,
+                                 rely=.26,
                                  relheight=.03,
                                  relwidth=.1)
 
@@ -171,7 +171,7 @@ class tech_control_gui:
                                        background="#FFFFFF",
                                        text="Директория")
         self.SaveFilePathLabel.place(relx=.12,
-                                     rely=.25,
+                                     rely=.26,
                                      relheight=.03,
                                      relwidth=.3)
 
@@ -179,14 +179,14 @@ class tech_control_gui:
                                        background="#FFFFFF")
         self.SaveFilePathLabel.insert(0, self.file_path)
         self.SaveFilePathLabel.place(relx=.01,
-                                     rely=.30,
+                                     rely=.31,
                                      relheight=.05,
                                      relwidth=.58)
         self.SaveFilePathButton = Button(self.ToolsFrame,
                                          text="Выбрать",
                                          command=self.open_file_dialog)
         self.SaveFilePathButton.place(relx=.60,
-                                      rely=.30,
+                                      rely=.31,
                                       relheight=.05,
                                       relwidth=.38)
 
