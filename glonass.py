@@ -95,8 +95,8 @@ class Glonass:
                     self.GPS_LATITUDE_REF = i[3]
                     self.GPS_LONGITUDE = (lon[0], lon[1], 0.0)
                     self.GPS_LONGITUDE_REF = i[5]
-                    self.latitude_text = str(int(lat[0])) + 'D ' + str(lat[1]) + "' " + i[3]
-                    self.longitude_text = str(int(lon[0])) + 'D ' + str(lon[1]) + "' " + i[5]
+                    self.latitude_text = str(int(lat[0])) + '˚ ' + str(lat[1]) + "' " + i[3]
+                    self.longitude_text = str(int(lon[0])) + '˚ ' + str(lon[1]) + "' " + i[5]
                 except:
                     pass
 

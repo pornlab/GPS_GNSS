@@ -11,7 +11,6 @@ from datetime import datetime
 import time
 
 
-
 class tech_control_gui:
     def __init__(self, top):
         self.root = top
@@ -23,7 +22,7 @@ class tech_control_gui:
         top.title('ФОТОФИКСАЦИЯ "ПМ-1"')
         top.configure(background="#FFFFFF")
         top.configure(highlightcolor="white")
-        fontExample = ("Roboto", 14)
+        font = ("Roboto", 14)
 
         self.PictureTime = ''
         self.PictureDate = ''
@@ -96,7 +95,7 @@ class tech_control_gui:
         self.CameraType = Label(self.ToolsFrame,
                                 background="#FFFFFF",
                                 text="USB Камера",
-                                font=fontExample)
+                                font=font)
         self.CameraType.place(relx=.12,
                               rely=.01,
                               relheight=.04,
@@ -104,6 +103,7 @@ class tech_control_gui:
 
         self.VideoImage = Label(self.ToolsFrame,
                                 background="#FFFFFF",
+                                font=font,
                                 image=self.CameraDisabledStateImageFile)
         self.VideoImage.place(relx=.9,
                               rely=.01,
@@ -112,6 +112,7 @@ class tech_control_gui:
 
         self.ListOfAvailableCameras = ttk.Combobox(self.ToolsFrame,
                                                    background="#FFFFFF",
+                                                   font=font,
                                                    values=self.ListOfCameras,
                                                    state="readonly",
                                                    style="TCombobox")
@@ -132,6 +133,7 @@ class tech_control_gui:
 
         self.GPSModuleType = Label(self.ToolsFrame,
                                    background="#FFFFFF",
+                                   font=font,
                                    text="GLONASS Модуль")
         self.GPSModuleType.place(relx=.12,
                                  rely=.14,
@@ -148,10 +150,10 @@ class tech_control_gui:
 
         self.ListOfAvailableGPSModules = ttk.Combobox(self.ToolsFrame,
                                                       background="#FFFFFF",
+                                                      font=font,
                                                       values=self.ListOfGPSModules,
                                                       style="TCombobox",
-                                                      state="readonly",
-                                                      font=fontExample)
+                                                      state="readonly")
         self.ListOfAvailableGPSModules.bind('<Button-1>', self.glonass_device_update)
         self.ListOfAvailableGPSModules.bind('<<ComboboxSelected>>', self.open_glonass)
         self.ListOfAvailableGPSModules.current(0)
@@ -170,6 +172,7 @@ class tech_control_gui:
 
         self.SaveFilePathLabel = Label(self.ToolsFrame,
                                        background="#FFFFFF",
+                                       font=font,
                                        text="Директория")
         self.SaveFilePathLabel.place(relx=.12,
                                      rely=.26,
@@ -177,6 +180,7 @@ class tech_control_gui:
                                      relwidth=.3)
 
         self.SaveFilePathLabel = Entry(self.ToolsFrame,
+                                       font=font,
                                        background="#FFFFFF")
         self.SaveFilePathLabel.insert(0, self.file_path)
         self.SaveFilePathLabel.place(relx=.01,
@@ -185,6 +189,7 @@ class tech_control_gui:
                                      relwidth=.58)
         self.SaveFilePathButton = Button(self.ToolsFrame,
                                          text="Выбрать",
+                                         font=font,
                                          command=self.open_file_dialog)
         self.SaveFilePathButton.place(relx=.60,
                                       rely=.31,
@@ -194,6 +199,7 @@ class tech_control_gui:
         self.GPSTimeLabel = Label(self.ToolsFrame,
                                   width=10,
                                   anchor='w',
+                                  font=font,
                                   background="#FFFFFF",
                                   text="Время")
         self.GPSTimeLabel.place(relx=.01,
@@ -205,6 +211,7 @@ class tech_control_gui:
         self.time_of_gps.set(0)
         self.LocalTime = Checkbutton(self.ToolsFrame,
                                      text='GPS',
+                                     font=font,
                                      variable=self.time_of_gps,
                                      onvalue=1, offvalue=0)
         self.LocalTime.place(relx=.25,
@@ -215,6 +222,7 @@ class tech_control_gui:
         self.GPSTime = Label(self.ToolsFrame,
                              width=10,
                              anchor='e',
+                             font=font,
                              background="#FFFFFF",
                              text=datetime.now().strftime("%H:%M:%S"))
         self.GPSTime.place(relx=.61,
@@ -225,6 +233,7 @@ class tech_control_gui:
         self.GPSDateLabel = Label(self.ToolsFrame,
                                   width=10,
                                   anchor='w',
+                                  font=font,
                                   background="#FFFFFF",
                                   text="Дата")
         self.GPSDateLabel.place(relx=.01,
@@ -235,6 +244,7 @@ class tech_control_gui:
         self.GPSDate = Label(self.ToolsFrame,
                              width=10,
                              anchor='e',
+                             font=font,
                              text=datetime.now().strftime("%d.%m.%Y"))
         self.GPSDate.place(relx=.41,
                            rely=.45,
@@ -244,6 +254,7 @@ class tech_control_gui:
         self.GPSLatitudeLabel = Label(self.ToolsFrame,
                                       width=10,
                                       anchor='w',
+                                      font=font,
                                       background="#FFFFFF",
                                       text="Широта")
         self.GPSLatitudeLabel.place(relx=.01,
@@ -254,6 +265,7 @@ class tech_control_gui:
         self.GPSLatitude = Label(self.ToolsFrame,
                                  width=10,
                                  anchor='e',
+                                 font=font,
                                  background="#FFFFFF",
                                  text='0')
         self.GPSLatitude.place(relx=.41,
@@ -264,6 +276,7 @@ class tech_control_gui:
         self.GPSLongitudeLabel = Label(self.ToolsFrame,
                                        width=10,
                                        anchor='w',
+                                       font=font,
                                        background="#FFFFFF",
                                        text="Долгота")
         self.GPSLongitudeLabel.place(relx=.01,
@@ -274,6 +287,7 @@ class tech_control_gui:
         self.GPSLongitude = Label(self.ToolsFrame,
                                   width=10,
                                   anchor='e',
+                                  font=font,
                                   background="#FFFFFF",
                                   text='0')
         self.GPSLongitude.place(relx=.41,
@@ -351,6 +365,8 @@ class tech_control_gui:
             self.VideoImage.configure(image=self.CameraDisabledStateImageFile)
         self.ListOfAvailableCameras.configure(values=self.ListOfCameras)
 
+        # 12.05.2020 12:34 5645645˚7864564554" с.ш. 5645645˚7864564554" ю.д..JPG
+
     def glonass_device_update(self, *args):
         self.ListOfGPSModules = self.glonass.check_device()
         print(self.ListOfGPSModules)
@@ -409,10 +425,10 @@ class tech_control_gui:
         self.glonass.open_glonass(str(self.ListOfAvailableGPSModules.get()).split(' - ')[1])
         self.start_glonass_monitor()
 
-
     def start_glonass_monitor(self, *args):
         self.glonass.parse_glonass_data()
         self.ListOfAvailableGPSModules.after(2000, self.start_glonass_monitor)
+
 
 a = tech_control_gui(Tk())
 a.run()
