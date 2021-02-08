@@ -20,7 +20,10 @@ class tech_control_gui:
         top.title('ФОТОФИКСАЦИЯ "ПМ-1"')
         top.configure(background="#FFFFFF")
         top.configure(highlightcolor="white")
-        font = ("Roboto", 10)
+        font = ('Roboto', 14)
+        fg = '#7C7C7C'
+        self.AppStyle = ttk.Style()
+        self.AppStyle.configure('MakePic.TButton', background="#ff2525")
 
         self.PictureTime = ''
         self.PictureDate = ''
@@ -33,7 +36,7 @@ class tech_control_gui:
             Image.open("images/gps_point.png").resize((14, 14), Image.ANTIALIAS))
         self.SaveFileImageFile = ImageTk.PhotoImage(
             Image.open("images/save_file.png").resize((14, 14), Image.ANTIALIAS))
-        self.MakePicImageFile = ImageTk.PhotoImage(Image.open("images/make_pic.jpeg").resize((26, 20), Image.ANTIALIAS))
+        self.MakePicImageFile = ImageTk.PhotoImage(Image.open("images/make_pic.png").resize((26, 20), Image.ANTIALIAS))
         self.CameraDisabledStateImageFile = ImageTk.PhotoImage(
             Image.open("images/red_circle.jpeg").resize((11, 11), Image.ANTIALIAS))
         self.CameraUpdateStateImageFile = ImageTk.PhotoImage(
@@ -51,11 +54,7 @@ class tech_control_gui:
         self.camera_image = None
         self.file_path = ''
         self.ListOfCameras = ['Выберите камеру...']
-
         self.ListOfGPSModules = ['Выберите устройство GLONASS...']
-
-        self.AppStyle = ttk.Style()
-        self.AppStyle.configure('MakePic.TButton', background="#ff2525")
 
         self.CameraFrame = Frame(top,
                                  background="#FFFFFF")
@@ -74,7 +73,7 @@ class tech_control_gui:
         self.CameraResult = Label(self.CameraFrame,
                                   background="#252525",
                                   relief=GROOVE,
-                                  borderwidth="3")
+                                  borderwidth="0")
         self.CameraResult.place(relx=.01,
                                 rely=.01,
                                 relheight=.98,
@@ -92,6 +91,9 @@ class tech_control_gui:
 
         self.CameraType = Label(self.ToolsFrame,
                                 background="#FFFFFF",
+                                width=10,
+                                anchor='w',
+                                fg=fg,
                                 text="USB Камера",
                                 font=font)
         self.CameraType.place(relx=.12,
@@ -117,7 +119,7 @@ class tech_control_gui:
         self.ListOfAvailableCameras.bind('<Button-1>', self.camera_list_update)
         self.ListOfAvailableCameras.current(0)
         self.ListOfAvailableCameras.place(relx=.01,
-                                          rely=.06,
+                                          rely=.05,
                                           relheight=.06,
                                           relwidth=.98)
 
@@ -131,7 +133,10 @@ class tech_control_gui:
 
         self.GPSModuleType = Label(self.ToolsFrame,
                                    background="#FFFFFF",
+                                   width=10,
+                                   anchor='w',
                                    font=font,
+                                   fg=fg,
                                    text="GLONASS Модуль")
         self.GPSModuleType.place(relx=.12,
                                  rely=.14,
@@ -164,16 +169,19 @@ class tech_control_gui:
                                    background="#FFFFFF",
                                    image=self.SaveFileImageFile)
         self.SaveFileImage.place(relx=.01,
-                                 rely=.26,
+                                 rely=.27,
                                  relheight=.03,
                                  relwidth=.1)
 
         self.SaveFilePathLabel = Label(self.ToolsFrame,
                                        background="#FFFFFF",
+                                       width=10,
+                                       anchor='w',
+                                       fg=fg,
                                        font=font,
                                        text="Директория")
         self.SaveFilePathLabel.place(relx=.12,
-                                     rely=.26,
+                                     rely=.27,
                                      relheight=.03,
                                      relwidth=.3)
 
@@ -187,6 +195,7 @@ class tech_control_gui:
                                      relwidth=.58)
         self.SaveFilePathButton = Button(self.ToolsFrame,
                                          text="Выбрать",
+                                         fg=fg,
                                          font=font,
                                          command=self.open_file_dialog)
         self.SaveFilePathButton.place(relx=.60,
@@ -199,6 +208,7 @@ class tech_control_gui:
                                   anchor='w',
                                   font=font,
                                   background="#FFFFFF",
+                                  fg=fg,
                                   text="Время")
         self.GPSTimeLabel.place(relx=.01,
                                 rely=.40,
@@ -210,6 +220,7 @@ class tech_control_gui:
         self.LocalTime = Checkbutton(self.ToolsFrame,
                                      text='GPS',
                                      font=font,
+                                     fg=fg,
                                      variable=self.time_of_gps,
                                      onvalue=1, offvalue=0)
         self.LocalTime.place(relx=.25,
@@ -222,6 +233,7 @@ class tech_control_gui:
                              anchor='e',
                              font=font,
                              background="#FFFFFF",
+                             fg=fg,
                              text=datetime.now().strftime("%H:%M:%S"))
         self.GPSTime.place(relx=.61,
                            rely=.40,
@@ -233,6 +245,7 @@ class tech_control_gui:
                                   anchor='w',
                                   font=font,
                                   background="#FFFFFF",
+                                  fg=fg,
                                   text="Дата")
         self.GPSDateLabel.place(relx=.01,
                                 rely=.45,
@@ -243,6 +256,7 @@ class tech_control_gui:
                              width=10,
                              anchor='e',
                              font=font,
+                             fg=fg,
                              text=datetime.now().strftime("%d.%m.%Y"))
         self.GPSDate.place(relx=.41,
                            rely=.45,
@@ -254,6 +268,7 @@ class tech_control_gui:
                                       anchor='w',
                                       font=font,
                                       background="#FFFFFF",
+                                      fg=fg,
                                       text="Широта")
         self.GPSLatitudeLabel.place(relx=.01,
                                     rely=.5,
@@ -265,6 +280,7 @@ class tech_control_gui:
                                  anchor='e',
                                  font=font,
                                  background="#FFFFFF",
+                                 fg=fg,
                                  text='0')
         self.GPSLatitude.place(relx=.41,
                                rely=.5,
@@ -276,6 +292,7 @@ class tech_control_gui:
                                        anchor='w',
                                        font=font,
                                        background="#FFFFFF",
+                                       fg=fg,
                                        text="Долгота")
         self.GPSLongitudeLabel.place(relx=.01,
                                      rely=.55,
@@ -286,6 +303,7 @@ class tech_control_gui:
                                   width=10,
                                   anchor='e',
                                   font=font,
+                                  fg=fg,
                                   background="#FFFFFF",
                                   text='0')
         self.GPSLongitude.place(relx=.41,
@@ -295,15 +313,17 @@ class tech_control_gui:
 
         self.CopyButton = Button(self.ToolsFrame,
                                  command=self.copy_data,
+                                 fg=fg,
                                  text='Скопировать данные')
         self.CopyButton.place(relx=.01,
                               rely=.62,
                               relheight=.15,
                               relwidth=.98)
 
-        self.MakePicButton = Button(self.ToolsFrame,
+        self.MakePicButton = ttk.Button(self.ToolsFrame,
                                     text='Сделать Снимок',
-                                    background="#EE5555",
+                                    #background="#EE5555",
+                                    #fg='#FFFFFF',
                                     compound="left",
                                     image=self.MakePicImageFile,
                                     command=self.capture)
