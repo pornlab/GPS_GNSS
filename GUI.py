@@ -20,7 +20,7 @@ class tech_control_gui:
         top.title('ФОТОФИКСАЦИЯ "ПМ-1"')
         top.configure(background="#FFFFFF")
         top.configure(highlightcolor="white")
-        font = ('Roboto', 14)
+        font = ('Roboto', 10)
         fg = '#7C7C7C'
         self.AppStyle = ttk.Style()
         self.AppStyle.configure('MakePic.TButton', background="#ff2525")
@@ -36,7 +36,10 @@ class tech_control_gui:
             Image.open("images/gps_point.png").resize((14, 14), Image.ANTIALIAS))
         self.SaveFileImageFile = ImageTk.PhotoImage(
             Image.open("images/save_file.png").resize((14, 14), Image.ANTIALIAS))
-        self.MakePicImageFile = ImageTk.PhotoImage(Image.open("images/make_pic.png").resize((26, 20), Image.ANTIALIAS))
+        self.MakePicImageFile = ImageTk.PhotoImage(
+            Image.open("images/redbutton.png").resize((270, 78), Image.ANTIALIAS))
+        self.CopyImageFile = ImageTk.PhotoImage(
+            Image.open("images/copybutton.png").resize((270, 66), Image.ANTIALIAS))
         self.CameraDisabledStateImageFile = ImageTk.PhotoImage(
             Image.open("images/red_circle.jpeg").resize((11, 11), Image.ANTIALIAS))
         self.CameraUpdateStateImageFile = ImageTk.PhotoImage(
@@ -85,7 +88,7 @@ class tech_control_gui:
                                 background="#FFFFFF",
                                 image=self.CameraImageFile)
         self.VideoImage.place(relx=.01,
-                              rely=.01,
+                              rely=.015,
                               relheight=.03,
                               relwidth=.1)
 
@@ -109,7 +112,8 @@ class tech_control_gui:
                               rely=.01,
                               relheight=.03,
                               relwidth=.1)
-
+        self.combo_style = ttk.Style()
+        self.combo_style.configure('TCombobox', foreground=fg)
         self.ListOfAvailableCameras = ttk.Combobox(self.ToolsFrame,
                                                    background="#FFFFFF",
                                                    font=font,
@@ -251,11 +255,11 @@ class tech_control_gui:
                                 rely=.45,
                                 relheight=.03,
                                 relwidth=.3)
-
         self.GPSDate = Label(self.ToolsFrame,
                              width=10,
                              anchor='e',
                              font=font,
+                             background="#FFFFFF",
                              fg=fg,
                              text=datetime.now().strftime("%d.%m.%Y"))
         self.GPSDate.place(relx=.41,
@@ -311,22 +315,19 @@ class tech_control_gui:
                                 relheight=.03,
                                 relwidth=.57)
 
-        self.CopyButton = Button(self.ToolsFrame,
-                                 command=self.copy_data,
-                                 fg=fg,
-                                 text='Скопировать данные')
+        self.CopyButton = Label(self.ToolsFrame,
+                                background="#FFFFFF",
+                                image=self.CopyImageFile)
         self.CopyButton.place(relx=.01,
                               rely=.62,
                               relheight=.15,
                               relwidth=.98)
 
-        self.MakePicButton = ttk.Button(self.ToolsFrame,
-                                    text='Сделать Снимок',
-                                    #background="#EE5555",
-                                    #fg='#FFFFFF',
-                                    compound="left",
-                                    image=self.MakePicImageFile,
-                                    command=self.capture)
+        self.MakePicButton = Label(self.ToolsFrame,
+                                   background="#FFFFFF",
+                                   compound="left",
+                                   image=self.MakePicImageFile)
+        # command=self.capture)
         self.MakePicButton.place(relx=.01,
                                  rely=.78,
                                  relheight=.2,
