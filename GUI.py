@@ -255,7 +255,6 @@ class tech_control_gui:
                                 rely=.45,
                                 relheight=.03,
                                 relwidth=.3)
-
         self.GPSDate = Label(self.ToolsFrame,
                              width=10,
                              anchor='e',
